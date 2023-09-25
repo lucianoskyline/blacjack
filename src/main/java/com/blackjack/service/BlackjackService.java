@@ -28,13 +28,12 @@ public class BlackjackService {
 
         System.out.println("\n\n=== BLACKJACK ===");
 
-        System.out.println("Quantos jogadores irão jogar?");
-        Integer nPlayers = scanner.nextInt();
-        if (nPlayers <= 0) {
-            System.out.println("Adicione ao menos um jogador");
-        } else {
-            createPlayers(nPlayers);
+        Integer nPlayers = 0;
+        while (nPlayers <= 0) {
+            System.out.println("Quantos jogadores irão jogar?");
+            nPlayers = scanner.nextInt();
         }
+        createPlayers(nPlayers);
 
         System.out.println("\n\n=== INICIANDO JOGO ===");
         sendCardsByPlayer();
