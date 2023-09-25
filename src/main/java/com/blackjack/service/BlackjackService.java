@@ -1,5 +1,6 @@
 package com.blackjack.service;
 
+import com.blackjack.common.OptionsConstants;
 import com.blackjack.domain.Cards;
 import com.blackjack.domain.Players;
 
@@ -43,22 +44,25 @@ public class BlackjackService {
             Iterator<Players> pl = players.listIterator();
             while (pl.hasNext()) {
                 Players p = pl.next();
-                System.out.println("\n\n=== " + p.getName() + ", sua vez de jogar ===");
-                System.out.println("Opções:");
-                System.out.println("1=Tirar uma carta");
 
-                Integer optPlayer = scanner.nextInt();
-                if (optPlayer == 1) {
-                    p = pullCard(p);
-                    showCardsByPlayer(p);
-                    if (p.getPoints() == 21) {
-                        hasBlackjack.set(true);
-                        System.out.println("\n\n=== " + p.getName() + " VENCEU a partida com " + p.getPoints() + " pontos!! ===");
-                        break;
-                    } else if (p.getPoints() >= 21) {
-                        System.out.println("\n\n=== " + p.getName() + " PERDEU a partida com " + p.getPoints() + " pontos!! ===");
-                        pl.remove();
-                    }
+                Integer optPlayer = OptionsConstants.DEFAULT;
+                while (optPlayer != OptionsConstants.PULL_CARD) {
+                    System.out.println("\n\n=== " + p.getName() + ", sua vez de jogar ===");
+                    System.out.println("Opções:");
+                    System.out.println("1=Tirar uma carta");
+
+                    optPlayer = scanner.nextInt();
+                }
+
+                p = pullCard(p);
+                showCardsByPlayer(p);
+                if (p.getPoints() == 21) {
+                    hasBlackjack.set(true);
+                    System.out.println("\n\n=== " + p.getName() + " VENCEU a partida com " + p.getPoints() + " pontos!! ===");
+                    break;
+                } else if (p.getPoints() > 21) {
+                    System.out.println("\n\n=== " + p.getName() + " PERDEU a partida com " + p.getPoints() + " pontos!! ===");
+                    pl.remove();
                 }
             }
         }
