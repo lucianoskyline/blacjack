@@ -12,10 +12,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class BlackjackService {
 
     public List<Players> players = new ArrayList();
+
     public List<Cards> deck = new ArrayList();
+
     public DeckService deckService = new DeckService();
+
     public Scanner scanner = new Scanner(System.in);
+
     public PlayersService playersService = new PlayersService();
+
 
     public void startGame() {
         players = new ArrayList();
@@ -41,22 +46,21 @@ public class BlackjackService {
                 System.out.println("\n\n=== " + p.getName() + ", sua vez de jogar ===");
                 System.out.println("Opções:");
                 System.out.println("1=Tirar uma carta");
-                System.out.println("2=Consultar pontuação");
 
                 Integer optPlayer = scanner.nextInt();
                 if (optPlayer == 1) {
                     p = pullCard(p);
+                    showCardsByPlayer(p);
                     if (p.getPoints() == 21) {
                         hasBlackjack.set(true);
                         System.out.println("\n\n=== " + p.getName() + " venceu a partida com " + p.getPoints() + " pontos!! ===");
-                        showCardsByPlayer(p);
                         break;
                     }
-                } else if (optPlayer == 2) {
-                    System.out.println(p.getPoints() + " pontos ate o momento");
                 }
             }
         }
+
+        showPoints();
     }
 
     public Players pullCard(Players p) {
@@ -68,13 +72,15 @@ public class BlackjackService {
     }
 
     public void showPoints() {
+        System.out.println("\n\n=== PONTOS ACUMULADOS ===");
+
         AtomicInteger atomicInteger = new AtomicInteger(0);
         players.forEach(p -> {
+            showCardsByPlayer(p);
             atomicInteger.addAndGet(p.getPoints());
         });
 
-        System.out.println("\n\n=== PONTOS ACUMULADOS ===");
-        System.out.println(atomicInteger.get());
+        System.out.println("Total de pontos:" + atomicInteger.get());
     }
 
     public List<Players> createPlayers(Integer n) {

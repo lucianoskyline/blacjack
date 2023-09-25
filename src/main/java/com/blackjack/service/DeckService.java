@@ -1,11 +1,11 @@
 package com.blackjack.service;
 
 import com.blackjack.domain.Cards;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 
 public class DeckService {
 
