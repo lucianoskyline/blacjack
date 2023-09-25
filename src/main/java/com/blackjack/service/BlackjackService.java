@@ -3,9 +3,7 @@ package com.blackjack.service;
 import com.blackjack.domain.Cards;
 import com.blackjack.domain.Players;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -42,7 +40,9 @@ public class BlackjackService {
 
         AtomicBoolean hasBlackjack = new AtomicBoolean(false);
         while (!hasBlackjack.get()) {
-            for (Players p : players) {
+            Iterator<Players> pl = players.listIterator();
+            while (pl.hasNext()) {
+                Players p = pl.next();
                 System.out.println("\n\n=== " + p.getName() + ", sua vez de jogar ===");
                 System.out.println("Opções:");
                 System.out.println("1=Tirar uma carta");
@@ -53,8 +53,11 @@ public class BlackjackService {
                     showCardsByPlayer(p);
                     if (p.getPoints() == 21) {
                         hasBlackjack.set(true);
-                        System.out.println("\n\n=== " + p.getName() + " venceu a partida com " + p.getPoints() + " pontos!! ===");
+                        System.out.println("\n\n=== " + p.getName() + " VENCEU a partida com " + p.getPoints() + " pontos!! ===");
                         break;
+                    } else if (p.getPoints() >= 21) {
+                        System.out.println("\n\n=== " + p.getName() + " PERDEU a partida com " + p.getPoints() + " pontos!! ===");
+                        pl.remove();
                     }
                 }
             }
