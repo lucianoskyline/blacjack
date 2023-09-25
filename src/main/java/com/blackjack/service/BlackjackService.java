@@ -45,7 +45,7 @@ public class BlackjackService {
 
                 Integer optPlayer = scanner.nextInt();
                 if (optPlayer == 1) {
-                    p = playersService.pullCard(p, deck);
+                    p = pullCard(p);
                     if (p.getPoints() == 21) {
                         hasBlackjack.set(true);
                         System.out.println("\n\n=== " + p.getName() + " venceu a partida com " + p.getPoints() + " pontos!! ===");
@@ -59,8 +59,12 @@ public class BlackjackService {
         }
     }
 
+    public Players pullCard(Players p) {
+        return playersService.pullCard(p, deck);
+    }
+
     public void shuffle(List<Cards> deck) {
-        deck = deckService.shuffle(deck);
+        deckService.shuffle(deck);
     }
 
     public void showPoints() {
@@ -73,13 +77,13 @@ public class BlackjackService {
         System.out.println(atomicInteger.get());
     }
 
-    public void createPlayers(Integer n) {
+    public List<Players> createPlayers(Integer n) {
         if (n <= 0) {
             System.out.println("Adicione ao menos um jogador");
         } else {
             for (int i = 0; i < n; i++) {
                 System.out.println("Insira o nome do jogador " + (i + 1) + ":");
-                players.add(playersService.create(scanner.next()));
+                createPlayer(scanner.next());
             }
 
             System.out.println("\n\n=== JOGADORES CADASTRADOS ===");
@@ -87,6 +91,11 @@ public class BlackjackService {
                 System.out.println(p.getName());
             });
         }
+        return players;
+    }
+
+    public void createPlayer(String name) {
+        players.add(playersService.create(name));
     }
 
     public void sendCardsByPlayer() {
@@ -100,7 +109,7 @@ public class BlackjackService {
         System.out.println("\n\n=== CARTAS DE " + player.getName() + " ===");
 
         player.getCards().forEach(c -> {
-            System.out.println(c.getNaipe() + " de " + c.getName()+" ("+c.getValue()+" pontos)");
+            System.out.println(c.getNaipe() + " de " + c.getName() + " (" + c.getValue() + " pontos)");
         });
     }
 
